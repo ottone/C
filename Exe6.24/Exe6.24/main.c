@@ -405,17 +405,18 @@ int main(){
  int vertical[8]  = {-1,-2,-2,-1, 1, 2,2,1};
  int count = 7, n = 1, move, count1 = -1 ;
  int result[8][8] = {0}, c1, c2; 
-  
-// printf("Immettere un valore per y e x :");
-// scanf("%d%d",&y,&x);
-
  
-for(c1 = 0; c1 <= 7; c1++){
-	
-  for(c2 = 0 , y = c1, x = c2, count = 7, count1 = -1, n = 1; c2 <= 7 ; c2++){
+//for(c1 = 0; c1 <= 7; c1++){	
+//for(c2 = 0 ; c2 <= 7 ; c2++){
+  n = 0;
+ // y = c1 ;
+ // x = c2 ;
+  count = 7;
+  count1 = -1;
   clean(board);
+  printf("Immettere un valore per y e x :");
+  scanf("%d%d",&y,&x);
   
-  board[y][x] = n++;
 
   while(count1 < 7){
         
@@ -433,12 +434,13 @@ for(c1 = 0; c1 <= 7; c1++){
 	}
 	
   }
-  result[c1][c2] = n;
-  printf("\nValore della caselle occupate: %d\n", n); 	   
-	}
+// result[c1][c2] = n - 1;
+// printf("\nValore della caselle occupate: %d\n", n); 	   
+//	}
 
-}
- stampa(result);
+//}
+//stampa(result);
+stampa(board);
 
  return 0;
 }
@@ -507,35 +509,35 @@ int ret;
 
 		switch (count){
 			case 6:
-	  		ret = 5;
+	  		ret = 5;//5;
 	  		break;
 
 			case 5:
-	  		ret = 6;
+	  		ret = 4;//6;
 	  		break;
 
 			case 7:
-	  		ret = 0;
+	  		ret = 6;//0;
 	  		break;
 	  
 			case 0:
-	  		ret = 7;
+	  		ret = 7;//7;
 	  		break;
 	
 			case 3:
-	  		ret = 4;
+	  		ret = 2;//4;
 	  		break;
 
 			case 4:
-	  		ret = 3;
+	  		ret = 3;//3;
 	  		break;
 
 			case 2:
-	  		ret = 1;
+	  		ret = 1;//1;
 	  		break;
 
 			case 1:
-	  		ret = 2;
+	  		ret = 0;//2;
 	  		break;
 
 	 }
