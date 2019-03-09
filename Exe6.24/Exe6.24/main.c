@@ -82,318 +82,13 @@ D) SCRITETE UNAVESIONE DEL PROGRAMMA DEL GIRO DEL CAVALLO CHE, QUALORA SI IMBATT
 // STAMPA "\N"
 //
 // 2° RAFFINAMENTO 
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
-int main() {
-    // insert code here...
-
-    srand(time(NULL));	
-
-    int count, count1 , board[8][8] = {0}, currentRow = 7 , currentColumn = 7, moveNumber, tempRow, tempColumn;
-    int horizontal[8] = {2,1,-1,-2,-2,-1,1,2}, vertical[8] = {-1,-2,-2,-1,1,2,2,1};
-    int temp;
-
-    for( count = 1 ; count <= 64 ; count++){
-    
-    count1 = 0;
-
-    	do{
-		moveNumber = rand() % 8;
-		tempRow = currentRow + vertical[moveNumber];
-		tempColumn = currentColumn + horizontal[moveNumber];
-
-    		if(((tempRow >= 0 || tempRow <= 7) && (tempColumn >= 0 || tempColumn <= 7)) && (board[tempRow][tempColumn] == 0)){
-         		currentRow = tempRow;
-			currentColumn = tempColumn;
-			board[currentRow] [currentColumn] = count;
-			break;
-        	}
-    	        
-    	}while(count1++ < 7);
-    }
-
-    printf("\n");
-
-    for (count = 0; count <= 7; count++){
-	    for(count1 = 0; count1 <= 7; count1++)
-		    printf("%3d",board[count][count1]);
-    printf("\n");
-    }
-
-    printf("\nHello, World!\n");
-    return 0;
-}
-*/
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
-int main() {
-    // insert code here...
-
-    srand(time(NULL));
-
-    int count = 1, x, y,  count1 , board[8][8] = {0}, currentRow = 7 , currentColumn = 7, moveNumber, tempRow, tempColumn;
-    int horizontal[8] = {2,1,-1,-2,-2,-1,1,2}, vertical[8] = {-1,-2,-2,-1,1,2,2,1};
-
-    		for(x = 0; x <= 7 ; x++){
-			for(y = 0; y <= 7; y++){
-			
-				if(x <= 2){
-				count1 = 0;
-				do{
-                                	moveNumber =  rand() % 8;
-                                	tempRow = currentRow + vertical[moveNumber];
-                                	tempColumn = currentColumn + horizontal[moveNumber];
-
-                                   if(((tempRow >= 0 || tempRow <= 7) && (tempColumn >= 0 || tempColumn <= 2)) && (board[tempRow][tempColumn] == 0)){
-                                	currentRow = tempRow;
-                                	currentColumn = tempColumn;
-                                	board[currentRow] [currentColumn] = count++;
-                                	break;
-                        		}
-
-                        	}while(count1++ < 7);
-				}else if(x >= 5){
-				count1 = 0;
-                                do{
-                                        moveNumber =  rand() % 8;
-                                        tempRow = currentRow + vertical[moveNumber];
-                                        tempColumn = currentColumn + horizontal[moveNumber];
-
-                                   if(((tempRow >= 0 || tempRow <= 3) && (tempColumn >= 5 || tempColumn <= 7)) && (board[tempRow][tempColumn] == 0)){
-                                        currentRow = tempRow;
-                                        currentColumn = tempColumn;
-                                        board[currentRow] [currentColumn] = count++;
-                                        break;
-                                        }
-
-                                }while(count1++ < 7);
-				count1 = 0;
-				}else if(y <= 2){
-                                do{
-                                        moveNumber =  rand() % 8;
-                                        tempRow = currentRow + vertical[moveNumber];
-                                        tempColumn = currentColumn + horizontal[moveNumber];
-
-                                   if(((tempRow >= 0 || tempRow <= 2 ) && (tempColumn >= 0 || tempColumn <= 7)) && (board[tempRow][tempColumn] == 0)){
-                                        currentRow = tempRow;
-                                        currentColumn = tempColumn;
-                                        board[currentRow] [currentColumn] = count++;
-                                        break;
-                                        }
-
-                                }while(count1++ < 7);
-
-				}else if(y >= 5){
-				count1 = 0;
-                                do{
-                                        moveNumber =  rand() % 8;
-                                        tempRow = currentRow + vertical[moveNumber];
-                                        tempColumn = currentColumn + horizontal[moveNumber];
-
-                                   if(((tempRow >= 5 || tempRow <= 7) && (tempColumn >= 0 || tempColumn <= 7)) && (board[tempRow][tempColumn] == 0)){
-                                        currentRow = tempRow;
-                                        currentColumn = tempColumn;
-                                        board[currentRow] [currentColumn] = count++;
-                                        break;
-                                        }
-
-                                }while(count1++ < 7);
-				}else{
-                                count1 = 0;
-                                do{
-                                        moveNumber =  rand() % 8;
-                                        tempRow = currentRow + vertical[moveNumber];
-                                        tempColumn = currentColumn + horizontal[moveNumber];
-
-                                   if(((tempRow >=3 || tempRow <= 4) && (tempColumn >= 3 || tempColumn <= 4)) && (board[tempRow][tempColumn] == 0)){
-                                        currentRow = tempRow;
-                                        currentColumn = tempColumn;
-                                        board[currentRow] [currentColumn] = count++;
-                                        break;
-                                        }
-
-                                }while(count1++ < 7);
-				}
-						
-			}
-		}
-    printf("\n");
-
-    for (count = 0; count <= 7; count++){
-            for(count1 = 0; count1 <= 7; count1++)
-                    printf("%3d",board[count][count1]);
-    printf("\n");
-    }
-
-    printf("\nHello World!!!\n");
-
-    return 0;
-}
-*/
-
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
-int angular(int, int);
-int search (int [], int, int);
-int board [8][8] = {0};
-
-int main() {
-    // insert code here...
-
-    srand(time(NULL));
-
-    int count = 1, count1 , currentRow = 0, currentColumn = 0, moveNumber, tempRow, tempColumn;
-    int horizontal[8] = {2,1,-1,-2,-2,-1,1,2}; 
-    int  vertical[8] = {-1,-2,-2,-1,1,2,2,1};
-    int buffer[8] = {8};
-
-
-    board[currentRow][currentColumn] = count++;
-	
-while(count <= 64){	
-	moveNumber = angular(currentRow, currentColumn);
-	tempRow = currentRow + vertical[moveNumber];
-        tempColumn = currentColumn + horizontal[moveNumber];
-
-       	if((tempRow > -1 && tempRow < 8) && (tempColumn > -1 && tempColumn < 8) && (board[tempRow][tempColumn] == 0)){
-       		currentRow = tempRow;
-       		currentColumn = tempColumn;
-       		board[currentRow] [currentColumn] = count++;
-          		
-       	}else{
-		count1 = 0;
-       	 	for(count1 = 0; count1 <= 7; count1++){
-
-			do{
-			    buffer[count1] = rand() % 8;
-			}while(search(buffer,buffer[count1],count1));
-			
-			tempRow = currentRow + vertical[buffer[count1]];
-      			tempColumn = currentColumn + horizontal[buffer[count1]];
-
- 	        if((tempRow > -1 && tempRow < 8) && (tempColumn > -1 && tempColumn < 8) && (board[tempRow][tempColumn] == 0)){
-        	       currentRow = tempRow;
-         	       currentColumn = tempColumn;
-         	       board[currentRow] [currentColumn] = count++;
-		       break;
-		}
-		}
-
-	}
-
-	if(count1 > 7 )	
-            break;
-}				
-	
-    
-    printf("\n");
-
-    for (count = 0; count <= 7; count++){
-            for(count1 = 0; count1 <= 7; count1++)
-                    printf("%3d",board[count][count1]);
-    printf("\n");
-    }
-
-    printf("\nHello World!!!\n");
-
-    return 0;
-}
-
-
-int angular(int y, int x)
-{
-	//int horizontal[8] = {2, 1,-1,-2,-2,-1,1,2};
-	//int  vertical[8] = {-1,-2,-2,-1, 1, 2,2,1};
-
-	int moveNumber = 0;
-
-                // selezione per i quattro angoli
-		
-		if(y == 1 && x == 2)
-                        moveNumber = 3;
-
-                else if(y == 2 && x == 1)
-                        moveNumber = 2;
-                
-		else if(y == 1 && x == 5)
-                        moveNumber = 0;
-                
-		else if(y == 2 && x == 6)
-                        moveNumber = 1;
-                
-		else if(y == 5 && x == 1)
-                        moveNumber = 5;
-                
-		else if(y == 6 && x == 2)
-                        moveNumber = 4;
-                
-		else if(y == 5 && x == 6)
-                        moveNumber = 6;
-                
-		else if(y == 6 && x == 5)
-                        moveNumber = 7;
-
-		else if(y == 0 && x == 0)
-                        moveNumber = board[1][2] ? 7 : 6;
-
-		else if(y == 0 && x == 7)
-		        moveNumber = board[2][6] ? 4 : 5;
-
-		else if(y == 7 && x == 0)
-                        moveNumber = board[5][1] ? 0 : 1;
-
-		else if(y == 7 && x == 7)
-                        moveNumber = board[6][5] ? 2 : 3;		
-
-		else if((y <= 1 && x <= 1) || (y >= 6 && x <= 1))
-                       moveNumber = rand() % 2 ? 7 : 0;
-
-                else if((y <= 1  && x >= 6) || (y >= 6 && x >= 6))
-                        moveNumber = 3 + rand() % 2 ;
-		 
-		//else if((y <= 1 && x <= 1) || (y <= 1 && x >= 6))
-                //       moveNumber = 5 + rand() % 2;
-
-                //else if((y >= 6 && x <= 1) || (y >= 6 && x >= 6))
-                //        moveNumber = 1 + rand() % 2;
-
-		else
-			moveNumber = rand() % 8;
-		
-	return moveNumber;
-}
-
-
-int search(int buf[], int value, int stop){
-
-int count ,ret = 0;
-if(stop == 0)
-	ret = 0;
-else{
-	for(count = 0; count <= stop - 1; count++)
-		if(buf[count] == value)
-			ret = 1;
-}
-
-return ret;
-}
-*/
 
 #include <stdio.h>
 #define SIZE 8
 
 void stampa(int [][8]);
 int ctrl(int [][8], int , int, int );
-int reverse(int , int, int , int);
+int reverse(int);
 int obstacole(int);
 void clean(int board[][8]);
 
@@ -406,16 +101,16 @@ int main(){
  int count = 7, n = 1, move, count1 = -1 ;
  int result[8][8] = {0}, c1, c2; 
  
-//for(c1 = 0; c1 <= 7; c1++){	
-//for(c2 = 0 ; c2 <= 7 ; c2++){
+for(c1 = 0; c1 <= 7; c1++){	
+  for(c2 = 0 ; c2 <= 7 ; c2++){
   n = 0;
- // y = c1 ;
- // x = c2 ;
+  y = c1 ;
+  x = c2 ;
   count = 7;
   count1 = -1;
   clean(board);
-  printf("Immettere un valore per y e x :");
-  scanf("%d%d",&y,&x);
+ // printf("Immettere un valore per y e x :");
+ // scanf("%d%d",&y,&x);
   
 
   while(count1 < 7){
@@ -430,17 +125,17 @@ int main(){
         	x += horizontal[move];
         	board[y][x] = n++;
 		count1 = -1;
-		count = reverse(count ,n ,y , x);
+		count = reverse(count);
 	}
 	
   }
-// result[c1][c2] = n - 1;
+ result[c1][c2] = n - 1;
 // printf("\nValore della caselle occupate: %d\n", n); 	   
-//	}
+	}
 
-//}
-//stampa(result);
-stampa(board);
+}
+stampa(result);
+//stampa(board);
 
  return 0;
 }
@@ -454,7 +149,6 @@ for(count = 0; count <= 7; count++)
 }
 
 int obstacole(int count){
-
 
 		if(count < 7)
 			count++;
@@ -501,48 +195,45 @@ int ctrl(int board[][8], int y, int x, int dir){
 }
 
 
-int reverse(int count, int n, int y ,int  x){
+int reverse(int count){
 	       //              0  1  2  3  4  5 6 7
 //        int horizontal[8] = {2, 1,-1,-2,-2,-1,1,2};
 //        int vertical[8]  = {-1,-2,-2,-1, 1, 2,2,1};
-int ret;
+int ret ;
 
 		switch (count){
-			case 6:
-	  		ret = 5;//5;
-	  		break;
-
-			case 5:
-	  		ret = 4;//6;
-	  		break;
-
-			case 7:
-	  		ret = 6;//0;
-	  		break;
-	  
-			case 0:
-	  		ret = 7;//7;
-	  		break;
-	
-			case 3:
-	  		ret = 2;//4;
-	  		break;
-
-			case 4:
-	  		ret = 3;//3;
+			case 1:
+	  		ret = 0;
 	  		break;
 
 			case 2:
-	  		ret = 1;//1;
+	  		ret = 1;
 	  		break;
 
-			case 1:
-	  		ret = 0;//2;
+			case 3:
+	  		ret = 2;
 	  		break;
-
-	 }
-
+	  
+			case 4:
+	  		ret = 3;
+	  		break;
 	
+			case 5:
+	  		ret = 4;
+	  		break;
 
+			case 6:
+	  		ret = 5;
+	  		break;
+
+			case 7:
+	  		ret = 6;
+	  		break;
+
+			case 0:
+	  		ret = 7;
+	  		break;
+	
+}
 return ret;
 }
