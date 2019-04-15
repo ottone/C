@@ -67,3 +67,52 @@ C) LEGGETE UNA SERIE DI NUMERI E DETERMINATE E VISUALIZZATE QUELLO MAGGIORE. IL 
    ELABORATI.
 
 */
+
+
+#include <stdio.h>
+#define SIZE 100
+
+int istruzione (int);
+int posizione (int);
+// OPERAZIONE DI INPUT / OUTPUT :
+
+void read(int []); 	//#DEFINE READ 10                                 LEGGE UNA PAROLA DAL TERMINALE E LA IMMAGAZZINA IN UNA SPECIFICA LOCAIONE DI MEMORIA.
+void write(int []);	//#DEFINE WRITE 11                                SCRIVE SUL TERMINALE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA.
+
+// OPERAZIONI DI CARICAMENTO / IMMAGAZZINAMENTO :
+
+void load(int []);	//#DEFINE LOAD 20                                 CARICA NELL'ACCUMULATORE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA.
+void store(int []);	//#DEFINE STORE 21                                ARCHIVIA IL CONTENUTO DELL'ACCUMULATORE IN UNA SPECIFICA LOCAZIONE DI MEMORIA.
+
+// OPERAZIONI ARITMETICHE:
+
+void add(int []);	//#DEFINE ADD 30                                  AGGIUNGE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA A QUELLA CONTENUTA
+                        //  			                          NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
+void subtract(int []);	//#DEFINE SUBTRACT 31                             SOTTRAE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA DA QUELLA CONTENUTA
+                        //			                          NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
+void divide(int []);	//#DEFINE DIVIDE 32                               DIVIDE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA PER QUELLA CONTENUTA 
+                        //			                          NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
+void multiply(int []);  //#DEFINE MULTIPLY 33                             MOLTIPLICA LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA PER QUELLA CONTENUTA
+                        //			                          NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO).
+// OPERAZIONI DI TRASFERIMENTO DEL CONTROLLO:
+
+void branch(int []);	//#DEFINE BRANCH 40                               SALTA A UNA SPECIFICA LOCAZIONE DI MEMORIA
+void brachneg(int []);	//#DEFINE BRANCHNEG 41                            SALTA A UNA SPECIFICA LOCAIZONE DI MEMORIA, SE L'ACCUMULATORE UN VALORE NEGATIVO.
+void branchzero(int []);//#DEFINE BRANCHZERO 42                           SALTA A UNA SPECIFICA LOCAIZONE DI MEMORIA, SE L'ACCUMULATORE CONTIENE UN VALORE UGUALE A ZERO.
+void halt(int []);	//#DEFINE HALT 43                                 FERMA L'ESECUZIONE DEL PROGRAMMA
+
+
+main(){
+ 
+  int mem[SIZE] = {0};
+
+  
+}
+
+int istruzione(int number){
+  return number / 100;
+}
+
+int posizione(int number){
+  return number % 100;
+}
