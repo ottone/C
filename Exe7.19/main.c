@@ -77,16 +77,17 @@ A PUNTO I PROGRAMMI LMS CHE AVETE SCRITTO NELL'ESERCIZIO 7.18.
 
 NEL MOMENTO IN CUI ESEGUIRETE IL VOSTRO SIMULATORE SIMPLETRON QUESTO DOVRÀ INCOMINCIARE VISUALIZZANDO:
 
-*** Welcome to Simpletron! ***
+	*** Welcome to Simpletron! ***
 
 *** Please enter your program one instruction ***
 *** (or data word) at a time. I will type the ***
 *** location number and a question mark (?).  ***
 *** You then type the word for that location. ***
 *** Type the sentinel -99999 to stop entering ***
-*** your program. ***
+	     
+             *** your program. ***
 
-SIMULATE LA MEMORIA DEL SIMPLETRON CON IL VETTORE UNIDIMENSIONALE MEMORY DI 100 ELEMENT. SUPPONETE CHE IL SIMULATORE SIA GIÀ IN ESECUZIONE ED 
+SIMULATE LA MEMORIA DEL SIMPLETRON CON IL VETTORE UNIDIMENSIONALE MEMORY DI 100 ELEMENTI. SUPPONETE CHE IL SIMULATORE SIA GIÀ IN ESECUZIONE ED 
 ESAMINIAMO IL DIALOGO CHE SI SVILUPPERÀ CON ESSO, MAN MANO CHE IMMETTIAMO IL PROGRAMMA MOSTRATO NELL'ESEMPIO 2  DELL'ESERCIZIO 7.18:
 
 00 ? +1009
@@ -108,12 +109,13 @@ ESAMINIAMO IL DIALOGO CHE SI SVILUPPERÀ CON ESSO, MAN MANO CHE IMMETTIAMO IL PR
 ORA CHE IL PROGRAMMA LMS È STATO IMMESSO (O CARICATO) NEL VETTORE MEMORY, IL SIMPLETRON PROVVEDERÀ A ESEGUIRLO. L'ESECUZIONE COMINCIERÀ CON 
 L'ISTRUZIONE NELLA LOCAIZONE 00 E, COME IN C, CONTINUERÀ IN MODO SEQUENZIALE, SEMPRE CHE NON SI DIRAMI IN QUALCHE ALTRA PARTE DEL PROGRAMMA 
 A CAUSA DI UN TRASFERIMENTO DI CONTROLLO.
+
 UTILIZZATE LA VARIABILE ACCUMULATOR PER RAPPRESENTARE IL REGISTRO ACCUMULATORE. USATE LA VARIABILE INSTRUCTIONCOUNTER PER CONSERVARE L'INDIRIZZO
 DI MEMORIA IN CUI SARÀ CONTENUTA L'ISTRUIZONE DA ESEGUIRE. UTILIZZATE LA VARIABILE OPERATIONCODE PER INDICARE L'OPERAZIONE DA ESEGUIRE, OVVEROSIA
 LE DUE CIFRE A SINISTRA NELLA PAROLA DELL'ISTRUZIONE. USATE LA VARIABILE OPERAND PER INDICARE LA LOCAZIONE DI MEMORIA SU CUI OPERERÀ L'ISTRUIZONE
-DA ESEGUIRE. NON ESEGUITE DIRETTAMENTE LE ISTRUZIONI CONTENUTE NELLA MEMORIA. TRASFERITE PIUTTOSTO QUELLA DA ESEGUIRE DALLA MEMORIA IN UNA VARIABILE
-CHIAMATA INSTRUCIONREGISTER. IN SEGUITO "STACCHERETE" LE DUE CIFRE DI SINISTRA PER SISTEMARE IN OPERATIONCODE E "SEPARETE" LE DUE CIFRE DI DESTRA PER 
-SISTEMARLE IN OPERAND.
+DA ESEGUIRE. IN ALTRI TERMINI OPERAND CORRISPONDERÀ ALLE DUE CIFRE PIÙ A DESTRA DELL'ISTRUZIONE DA ESEGUIRE. NON ESEGUITE DIRETTAMENTE LE ISTRUZIONI
+CONTENUTE NELLA MEMORIA. TRASFERITE PIUTTOSTO QUELLA DA ESEGUIRE DALLA MEMORIA IN UNA VARIABILE CHIAMATA INSTRUCIONREGISTER. 
+IN SEGUITO "STACCHERETE" LE DUE CIFRE DI SINISTRA PER SISTEMARE IN OPERATIONCODE E "SEPARETE" LE DUE CIFRE DI DESTRA PER SISTEMARLE IN OPERAND.
 NEL MOMENTO IN CUI IL SIMPLETRON COMINCIERÀ L'ESECUZIONE I REGISTRI SPECIALI SARANNO DUNQUE INIZIALIZZATI NEL MODO SEGUENTE: 
 
 ACCUMULATOR 			+0000
@@ -128,14 +130,14 @@ DELL'ISTRUZIONE.
 LA VARIABILE INSTRUCTIONCOUNTER CI INDICA LA LOCAZIONE DELLA PROSSIMA ISTRUZIONE DA ESEGUIRE.
 "PRELEVEREMO" DUNQUE IL CONTENUTO DI QUELLA POSIZIONE DAL VETTORE MEMORY USANDO L'ISTRUZIONE C: 
 
-		instructionRegister - memory[instructionCounter];
+		instructionRegister = memory[instructionCounter];
 
 IL CODICE DELL'OPERAZIONE E L'OPERANDO SARANNO ESTRATTI DAL REGISTRO DELLE ISTRUZIONI CON: 
 
 		operationCode = instructionRegister / 100;
 		operand = instructionRegister % 100;
 	
-ORA IL SIMPLETRON È IN GRADO DI DETERMINARE CHE IL CODICE DELL'OPERAIOZNE CORRISPONDE IN REALTÀ A UNA READ (E NON A UNA WRITE, A UNA LOAD, ECC.). UNA STRUTTURA 
+ORA IL SIMPLETRON È IN GRADO DI DETERMINARE CHE IL CODICE DELL'OPERAIOZNE CORRISPONDE IN REALTÀ È UNA READ (E NON UNA WRITE, O UNA LOAD, ECC.). UNA STRUTTURA 
 SWITCH DISTINGUERÀ LE DODICI OPERAIZONI DEL LINGUAGGIO LMS.
 
 ALL'INTERNO DELLA STRUTTURA SWITCH IL COMPORTAMENTO DELLE VARIE ISTRUIZIONI SARÀ SIMULATO NEL MODO SEGUENTE (LASCIAMO A VOI LE ALTRE ISTRUZIONI):
@@ -153,7 +155,7 @@ E IN SEGUITO VISUALIZZERÀ IL NOME E IL CONTENUTO DI TUTTI I REGISTRI, COSÌ COM
 DUMP DEL COMPUTER (OVVEROSIA DEPOSITO DEL COMPUTER, CHE NON È PERÒ IL POSTO DOVE VANNO A FINIRE I VECCHI COMPUTER). PER AIUTARVI A IMPLEMENTARE LA VOSTRA
 FUNZIONE DI DUMP NELLA FIGURA 7.32 ABBIAMO RIPORTATO UN ESEMPIO PER IL FORMATO DEL DUMP. OSSERVATE CHE UN DUMP ESEGUITO ALLA FINE DELL'ESECUZIONE DI UN 
 PROGRAMMA SIMPLETRON DOVREBBE MOSTRARE I VALORI CORRENTI DELLE ISTRUZIONI E DEI DATI, COSÌ COME SONO IN QUEL MOMENTO.
-PROCEDIAMO CON L'ESECUZIONE DELLA PRIMA ISTRUIZONE DEL NOSTRO PROGRAMMA, VALE A DIRE LA +1009 DELAL POSIZIONE 00. COME ABBIAMO AFFERMATO PRIMA, LA STRUTTURA
+PROCEDIAMO CON L'ESECUZIONE DELLA PRIMA ISTRUIZONE DEL NOSTRO PROGRAMMA, VALE A DIRE LA +1009 DELLA POSIZIONE 00. COME ABBIAMO AFFERMATO PRIMA, LA STRUTTURA
 SWITCH LA SIMULERÀ ESEGUENDO L'ISTRUZIONE C
 
 		scanf("%d", &memory[operand]);
@@ -221,7 +223,6 @@ ERRORI FATALI. NEL MOMENTO IN CUI AVRÀ INTERCETTATO UN ERRORE FATALE, IL VOSTRO
 E VISUALIZZARE UN DUMP DOMPLETO DEL COMPUTER NEL FORMATO DI CUI ABBIAMO DISCUSSO IN PRECEDENZA.
 CIÒ AIUTERÀ L'UTENTE A INDIVIDUARE L'ERRORE DEL PROGRAMMA.
 
-
 */
 
 
@@ -232,231 +233,218 @@ CIÒ AIUTERÀ L'UTENTE A INDIVIDUARE L'ERRORE DEL PROGRAMMA.
 int istruzione (int);
 int posizione (int);
 
-void codici(void);
+void print_start(void);
 void editor(int []);
-void inserimento_modifica(int []);
 void simpletron(int []);
-int check(int []);
-void visualizza_sorgenti(int []);
+void visualizza_sorgenti(int [],int ,int, int, int, int);
 
 int main(){
- 
-  //int memory[SIZE] = {0}, count;
-  
-  int memory[SIZE] = {10,1,1,1003,4005,2000,3102,4219,2003,1004,3104,4116,2002,3001,2102,4005,2004,2103,4005,2003,1103,4300};
+  //                     0 1 2   3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21
+  //int memory[SIZE] = {10,1,1,1003,4005,2000,3102,4219,2003,1004,3104,4116,2002,3001,2102,4005,2004,2103,4005,2003,1103,4300};
+  //                    10,1,0,0   ,1003,2000,4217,3101,2100,2003,1004,3104,4114,4005,2004,2103,4005,1103,4300
+  int memory[SIZE] = {0};
 
-  visualizza_sorgenti(memory);
-
-  getchar();
-  
-  
-
-  // Editor simpletron
-  
-  // editor(memory);
-  
-  // Esecuzione 
-
-  if(check(memory))  
-  simpletron(memory);  
-
+  print_start();
+  editor(memory);  
+  simpletron(memory); 
   return 0;
 
 }
 
-void codici(void){
 
-          printf("\t10 LEGGE UNA PAROLA DAL TERMINALE E LA IMMAGAZZINA IN UNA SPECIFICA LOCAIONE DI MEMORIA.\n");
-          printf("\t11 SCRIVE SUL TERMINALE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA.\n");
-          printf("\t20 CARICA NELL'ACCUMULATORE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA.\n");
-          printf("\t21 ARCHIVIA IL CONTENUTO DELL'ACCUMULATORE IN UNA SPECIFICA LOCAZIONE DI MEMORIA.\n");
-          printf("\t30 AGGIUNGE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA A QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)\n");
-          printf("\t31 SOTTRAE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA DA QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)\n");
-          printf("\t32 DIVIDE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA PER QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)\n");
-          printf("\t33 MOLTIPLICA LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA PER QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO).\n");
-          printf("\t40 SALTA A UNA SPECIFICA LOCAZIONE DI MEMORIA\n");
-          printf("\t41 SALTA A UNA SPECIFICA LOCAIZONE DI MEMORIA, SE L'ACCUMULATORE UN VALORE NEGATIVO.\n");
-          printf("\t42 SALTA A UNA SPECIFICA LOCAIZONE DI MEMORIA, SE L'ACCUMULATORE CONTIENE UN VALORE UGUALE A ZERO.\n");
-          printf("\t43 FERMA L'ESECUZIONE DEL PROGRAMMA\n\n\n");
+void visualizza_sorgenti(int instruction[], int accumulator, int instructionCounter, int instructionRegister, int operationCode, int operand){
+
+        int position, x , y, count, n;
+
+	printf("\n");
+
+	printf("MEMORY  DUMP:\nREGISTERS:\n"); 
+        
+        printf("accumulator:  %4d\n",accumulator);
+        printf("instructionCounter  %2d\n", instructionCounter);
+        printf("instructionRegister %2d\n", instructionRegister);
+        printf("operationCode %2d\n", operationCode);
+        printf("operand %2d\n", operand);
+	
+        printf("\nMEMORY:\n");
 
 
-}
+	printf("%s","  ");
+	for(x = 0; x <= 9 ; x++)
+		printf("%8d",x);
+	
+	printf("\n");
 
-void visualizza_sorgenti(int instruction[]){
-
-        int position;
-
-	printf("\n\n");
-
-        for(position = 0; position < SIZE; position++){
-               printf("MEMORY[%3d] -> %4d", position , instruction[position]);
-	       (position + 1) % 4 == 0 ? printf("\n") : printf("\t");
+	for(y = 0 ; y <= 90; y += 10){
+		printf("%2d",y);
+		for(x = y; x < y + 10; x++){
+			if(instruction[x] == 0)
+				printf("    0000");
+			else{
+			printf("    ");
+			for(count = instruction[x], n = 0; count > 0; count  /= 10)
+        			n++;
+  			n = 4 - n;
+			while(n-- > 0)
+				printf("0");
+			printf("%d",instruction[x]);
+			}
+		}
+		printf("\n");
 	}
-	printf("\n\n");
+
+	printf("\n");
 }
 
 void editor(int instruction[SIZE]){
 
-        int  choice = 0;
+        int  choice = 0, position = 0;
 	
         	do{
-                	printf("\n1) STAMPA CODICI DELLE OPERAIZONI:\n");
-                	printf("\n2) VISUALIZZA IL CONTENUTO DEL SORGENTE.\n");
-               		printf("\n3) INSERIMENTO O MODIFICA DI UNA O PIU VOCI\n");
-                	printf("\n4) ESCI ED ESEGUI: ");
-                	scanf("%d", &choice);
-			
-		   switch (choice){
-			case 1:
-			codici();
-			break;
 
-			case 2:
-			visualizza_sorgenti(instruction);
-			break;
+			position < 10 ? printf("0%d ? ",position) : printf("%d ? ",position);
+			scanf("%d",&choice);
+			if(choice == -99999){
+				instruction[position] = 4300;
+				break;
+			}else if(choice > 9999){
+				continue;
+			}else{
+				instruction[position] = choice;
+				position++;
+			}
+		}while(position < 100);
+	
+	printf("\n\n\t\t*** Program loading completed ***\n\n\t\t*** Program execution begins ***\n\n");
 
-			case 3:
-			inserimento_modifica(instruction);
-			break;
-
-			case 4:
-			break;
-
-			default:
-			printf("Scelta sbagliata\n");
-			choice = 0;
-			break;
-		    }
-
-		}while(choice != 4);
-		
 }
 
-void inserimento_modifica(int instruction[SIZE]){
-
-        int position;
-
-	printf("\nInserire il valore dell'indice (-1 per terminare): ");
-	scanf("%d",&position);
-
-	while(position >= -1 && position <= 100){
-        
-	   if(position == -1)
-		   break;
-
-	   printf("\nParola :");
-	   scanf("%d",&instruction[position]);
-
-	   printf("\nInserire il valore dell'indice (-1 per terminare): ");
-           scanf("%d",&position);
-	}	
-}
 
 void simpletron(int memory[]){
 
-	int accumulatore = 0, puntatore = 0, temp = 0;
 
-	while(puntatore <= 100){
+	int accumulator = 0;                 //   +0000 RAPPRESENTA IL REGISTRO ACCUMULATORE
+  	int instructionCounter = 0;          //      00 PER CONSERVARE L'INDIRIZZO DI MEMORIA IN CUI SARA' CONTENUTA L'ISTRUZIONE DA ESEGUIRE
+  	int instructionRegister = 0;         //   +0000 NON ESEGUITE DIRETTAMENTE LE ISTRUZIONI CONTENUTE NELLA MEMORIA. TRASFERITE PIUTTOSTO QUELLA DA ESEGUIRE DALLA MEMORIA 
+			     		     //         IN UNA VARIABILE
+  	int operationCode = 0;               //      00 PER INDICARE L'OPERAZIONE DA ESEGUIRE OVVEROSIA LE DUE CIFRE A SINISTRA NELLA PAROLA DELL'ISTRUZIONE
+  	int operand = 0;                     //      00 INDICA LA LOCAZIONE DI MEMORIA SU CUI OPERERÀ L'ISTRUZIONE DA ESEGUIRE
+  	
+	while(instructionCounter <= 100){
 		
-		switch(istruzione(memory[puntatore])){
+		instructionRegister = memory[instructionCounter];
+		operationCode = instructionRegister / 100;
+                operand = instructionRegister % 100;
+/*
+		read: scanf("%d", &memory[operand]);
+                load: accumulator = memory[operand];
+                add:  accumulator += memory[operand];
+
+                VARIE ISTRUZIONI DI SALTO NE DISCUTEREMO A BREVE.
+
+                halt: QUESTA ISTRUZIONE VISUALIZZA IL MESSAGGIO 
+                *** Simpletron execution terminated ***
+*/
+
+
+		switch(operationCode){
 			
 			case 10:  // LEGGE UNA PAROLA DAL TERMINALE E LA IMMAGAZZINA IN UNA SPECIFICA LOCAZIONE DI MEMORIA.
 			printf("Inserire un numero: ");
-			scanf("%d",&memory[posizione(memory[puntatore])]);
-			puntatore++;
+			scanf("%d",&instructionRegister);
+			memory[operand] = instructionRegister;
+			++instructionCounter;
 			break;
 
 			case 11:  // SCRIVE SUL TERMINALE UNA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIONE DI MEMORIA.
-		        printf("\nValore presente in locazione %d : %d\n",posizione(memory[puntatore]) ,memory[posizione(memory[puntatore])]);
-			puntatore++;
+			instructionRegister = memory[operand];
+		        printf("\nValore presente in locazione %d : %d\n",operand ,instructionRegister);
+			++instructionCounter;
 			break; 
 
 			case 20:  // CARICA NELL'ACCUMULATORE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA
-			accumulatore = memory[posizione(memory[puntatore])];
-			printf("\nValore accumulatore: %d\n",accumulatore);
-			puntatore++;
+			accumulator = memory[operand];
+			printf("\nValore accumulatore: %d\n",accumulator);
+			++instructionCounter;
 			break;
 
 			case 21:  // ARCHIVIA IL CONTENUTO DELL'ACCUMULATORE IN UNA SPECIFICA LOCAIZONE DI MEMORIA.
-			memory[posizione(memory[puntatore])] = accumulatore;
-			puntatore++;
+			memory[operand] = accumulator;
+			++instructionCounter;
 			break;
 
 			case 30:  // AGGIUNGE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA A QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
-			accumulatore += memory[posizione(memory[puntatore])];
-			puntatore++;
+			accumulator += memory[operand];
+			++instructionCounter;
 			break;
 
 			case 31:  // SOTTRAE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA DA QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
-		        accumulatore -= memory[posizione(memory[puntatore])];
-			printf("\nValore accumulatore: %d\n",accumulatore);
-			puntatore++;
+		        accumulator -= memory[operand];
+			//printf("\nValore accumulatore: %d\n",accumulator);
+			++instructionCounter;
                         break;
 			
 			case 32:  // DIVIDE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA PER QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
-			accumulatore /= memory[posizione(memory[puntatore])];
-			printf("\nValore accumulatore: %d\n",accumulatore);
-			puntatore++;
+			accumulator /= memory[operand];
+			//printf("\nValore accumulatore: %d\n",accumulator);
+			++instructionCounter;
                         break;
 			
 			case 33:  // MOLTIPLICA LA PAROLA CONTENUTA IN UNA SPEFICA LOCAIZONE DI MEMORIA DA QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
-			accumulatore *= memory[posizione(memory[puntatore])];
-			printf("\nValore accumulatore: %d\n",accumulatore);
-			puntatore++;
+			accumulator *= memory[operand];
+			//printf("\nValore accumulatore: %d\n",accumulator);
+			++instructionCounter;
                         break;
 
 			case 40:  // SALTA AD UNA SPECIFICA LOCAIZONE DI MEMORIA
-			puntatore  = posizione(memory[puntatore]);
+			instructionCounter  = operand;
                         break;
 			
 			case 41:  // SALTA AD UNA SPECIFICA LOCAZIONE DI MEMORIA SE L'ACCUMULATORE CONTIENE UN VALORE NEGATIVO
-			if(accumulatore < 0)
-				puntatore  = posizione(memory[puntatore]);
+			if(accumulator < 0)
+				instructionCounter = operand;
 			else
-				puntatore++;
+				++instructionCounter;
 			break;
 
 			case 42:  // SALTA AD UNA SPECIFICA LOCAZIONE DI MEMORIA SE L'ACCUMULATORE CONTIENE UN VALORE UGUALE A ZERO
-			if(accumulatore == 0)
-                        	puntatore  = posizione(memory[puntatore]);
+			if(accumulator == 0)
+                        	instructionCounter = operand;
 			else
-				puntatore++;
+				++instructionCounter;
                         break;
 
 			case 43:  // TERMINA L'ESECUZIONE
-			printf("\nBye!\n");
+			printf("\n*** Simpletron execution terminated ***\n");
 			break;
 
 			default:
-			printf("\nDato o istruzione errata: %d\n",memory[puntatore]);
-			puntatore++;
+			//printf("\nDato o istruzione errata: %d\n",instructionRegister);
+			++instructionCounter;
 			break;
 
 		}
 
-		visualizza_sorgenti(memory);
-
-		if(istruzione(memory[puntatore]) == 43)
+		if(operationCode == 43)
 			break;
 	}
 
+
+
+ visualizza_sorgenti(memory, accumulator, instructionCounter, instructionRegister, operationCode, operand);
+
 }
 
-int istruzione(int number){
-  return number / 100;
-}
 
-int posizione(int number){
-  return number % 100;
-}
-
-int check(int memory[SIZE]){
-
-	int count, ret = 0;
-
-	for(count = 0; count <= SIZE - 1; count++)
-		if(memory[count] != 0)
-			ret = 1;
+void print_start(void){
 	
-	return ret;
+
+	printf("\n        *** Welcome to Simpletron! ***\n");
+	printf("*** Please enter your program one instruction ***\n");
+	printf("*** (or data word) at a time. I will type the ***\n");
+	printf("*** location number and a question mark (?).  ***\n");
+	printf("*** You then type the word for that location. ***\n");
+	printf("*** Type the sentinel -99999 to stop entering ***\n");
+	printf("             *** your program. ***\n");
+
 }

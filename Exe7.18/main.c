@@ -72,41 +72,218 @@ C) LEGGETE UNA SERIE DI NUMERI E DETERMINATE E VISUALIZZATE QUELLO MAGGIORE. IL 
 #include <stdio.h>
 #define SIZE 100
 
+
 int istruzione (int);
 int posizione (int);
-// OPERAZIONE DI INPUT / OUTPUT :
 
-void read(int []); 	//#DEFINE READ 10                                 LEGGE UNA PAROLA DAL TERMINALE E LA IMMAGAZZINA IN UNA SPECIFICA LOCAIONE DI MEMORIA.
-void write(int []);	//#DEFINE WRITE 11                                SCRIVE SUL TERMINALE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA.
+void codici(void);
+void editor(int []);
+void inserimento_modifica(int []);
+void simpletron(int []);
+int check(int []);
+void visualizza_sorgenti(int []);
 
-// OPERAZIONI DI CARICAMENTO / IMMAGAZZINAMENTO :
-
-void load(int []);	//#DEFINE LOAD 20                                 CARICA NELL'ACCUMULATORE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA.
-void store(int []);	//#DEFINE STORE 21                                ARCHIVIA IL CONTENUTO DELL'ACCUMULATORE IN UNA SPECIFICA LOCAZIONE DI MEMORIA.
-
-// OPERAZIONI ARITMETICHE:
-
-void add(int []);	//#DEFINE ADD 30                                  AGGIUNGE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA A QUELLA CONTENUTA
-                        //  			                          NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
-void subtract(int []);	//#DEFINE SUBTRACT 31                             SOTTRAE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA DA QUELLA CONTENUTA
-                        //			                          NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
-void divide(int []);	//#DEFINE DIVIDE 32                               DIVIDE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA PER QUELLA CONTENUTA 
-                        //			                          NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
-void multiply(int []);  //#DEFINE MULTIPLY 33                             MOLTIPLICA LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA PER QUELLA CONTENUTA
-                        //			                          NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO).
-// OPERAZIONI DI TRASFERIMENTO DEL CONTROLLO:
-
-void branch(int []);	//#DEFINE BRANCH 40                               SALTA A UNA SPECIFICA LOCAZIONE DI MEMORIA
-void brachneg(int []);	//#DEFINE BRANCHNEG 41                            SALTA A UNA SPECIFICA LOCAIZONE DI MEMORIA, SE L'ACCUMULATORE UN VALORE NEGATIVO.
-void branchzero(int []);//#DEFINE BRANCHZERO 42                           SALTA A UNA SPECIFICA LOCAIZONE DI MEMORIA, SE L'ACCUMULATORE CONTIENE UN VALORE UGUALE A ZERO.
-void halt(int []);	//#DEFINE HALT 43                                 FERMA L'ESECUZIONE DEL PROGRAMMA
-
-
-main(){
+int main(){
  
-  int mem[SIZE] = {0};
-
+  //int memory[SIZE] = {0}, count;
   
+  int memory[SIZE] = {10,1,1,1003,4005,2000,3102,4219,2003,1004,3104,4116,2002,3001,2102,4005,2004,2103,4005,2003,1103,4300};
+
+  visualizza_sorgenti(memory);
+
+  getchar();
+  
+  
+
+  // Editor simpletron
+  
+  // editor(memory);
+  
+  // Esecuzione 
+
+  if(check(memory))  
+  simpletron(memory);  
+
+  return 0;
+
+}
+
+void codici(void){
+
+          printf("\t10 LEGGE UNA PAROLA DAL TERMINALE E LA IMMAGAZZINA IN UNA SPECIFICA LOCAIONE DI MEMORIA.\n");
+          printf("\t11 SCRIVE SUL TERMINALE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA.\n");
+          printf("\t20 CARICA NELL'ACCUMULATORE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA.\n");
+          printf("\t21 ARCHIVIA IL CONTENUTO DELL'ACCUMULATORE IN UNA SPECIFICA LOCAZIONE DI MEMORIA.\n");
+          printf("\t30 AGGIUNGE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA A QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)\n");
+          printf("\t31 SOTTRAE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA DA QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)\n");
+          printf("\t32 DIVIDE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA PER QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)\n");
+          printf("\t33 MOLTIPLICA LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA PER QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO).\n");
+          printf("\t40 SALTA A UNA SPECIFICA LOCAZIONE DI MEMORIA\n");
+          printf("\t41 SALTA A UNA SPECIFICA LOCAIZONE DI MEMORIA, SE L'ACCUMULATORE UN VALORE NEGATIVO.\n");
+          printf("\t42 SALTA A UNA SPECIFICA LOCAIZONE DI MEMORIA, SE L'ACCUMULATORE CONTIENE UN VALORE UGUALE A ZERO.\n");
+          printf("\t43 FERMA L'ESECUZIONE DEL PROGRAMMA\n\n\n");
+
+
+}
+
+void visualizza_sorgenti(int instruction[]){
+
+        int position;
+
+	printf("\n\n");
+
+        for(position = 0; position < SIZE; position++){
+               printf("MEMORY[%3d] -> %4d", position , instruction[position]);
+	       (position + 1) % 4 == 0 ? printf("\n") : printf("\t");
+	}
+	printf("\n\n");
+}
+
+void editor(int instruction[SIZE]){
+
+        int  choice = 0;
+	
+        	do{
+                	printf("\n1) STAMPA CODICI DELLE OPERAIZONI:\n");
+                	printf("\n2) VISUALIZZA IL CONTENUTO DEL SORGENTE.\n");
+               		printf("\n3) INSERIMENTO O MODIFICA DI UNA O PIU VOCI\n");
+                	printf("\n4) ESCI ED ESEGUI: ");
+                	scanf("%d", &choice);
+			
+		   switch (choice){
+			case 1:
+			codici();
+			break;
+
+			case 2:
+			visualizza_sorgenti(instruction);
+			break;
+
+			case 3:
+			inserimento_modifica(instruction);
+			break;
+
+			case 4:
+			break;
+
+			default:
+			printf("Scelta sbagliata\n");
+			choice = 0;
+			break;
+		    }
+
+		}while(choice != 4);
+		
+}
+
+void inserimento_modifica(int instruction[SIZE]){
+
+        int position;
+
+	printf("\nInserire il valore dell'indice (-1 per terminare): ");
+	scanf("%d",&position);
+
+	while(position >= -1 && position <= 100){
+        
+	   if(position == -1)
+		   break;
+
+	   printf("\nParola :");
+	   scanf("%d",&instruction[position]);
+
+	   printf("\nInserire il valore dell'indice (-1 per terminare): ");
+           scanf("%d",&position);
+	}	
+}
+
+void simpletron(int memory[]){
+
+	int accumulatore = 0, puntatore = 0, temp = 0;
+
+	while(puntatore <= 100){
+		
+		switch(istruzione(memory[puntatore])){
+			
+			case 10:  // LEGGE UNA PAROLA DAL TERMINALE E LA IMMAGAZZINA IN UNA SPECIFICA LOCAZIONE DI MEMORIA.
+			printf("Inserire un numero: ");
+			scanf("%d",&memory[posizione(memory[puntatore])]);
+			puntatore++;
+			break;
+
+			case 11:  // SCRIVE SUL TERMINALE UNA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIONE DI MEMORIA.
+		        printf("\nValore presente in locazione %d : %d\n",posizione(memory[puntatore]) ,memory[posizione(memory[puntatore])]);
+			puntatore++;
+			break; 
+
+			case 20:  // CARICA NELL'ACCUMULATORE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA
+			accumulatore = memory[posizione(memory[puntatore])];
+			printf("\nValore accumulatore: %d\n",accumulatore);
+			puntatore++;
+			break;
+
+			case 21:  // ARCHIVIA IL CONTENUTO DELL'ACCUMULATORE IN UNA SPECIFICA LOCAIZONE DI MEMORIA.
+			memory[posizione(memory[puntatore])] = accumulatore;
+			puntatore++;
+			break;
+
+			case 30:  // AGGIUNGE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAIZONE DI MEMORIA A QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
+			accumulatore += memory[posizione(memory[puntatore])];
+			puntatore++;
+			break;
+
+			case 31:  // SOTTRAE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA DA QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
+		        accumulatore -= memory[posizione(memory[puntatore])];
+			printf("\nValore accumulatore: %d\n",accumulatore);
+			puntatore++;
+                        break;
+			
+			case 32:  // DIVIDE LA PAROLA CONTENUTA IN UNA SPECIFICA LOCAZIONE DI MEMORIA PER QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
+			accumulatore /= memory[posizione(memory[puntatore])];
+			printf("\nValore accumulatore: %d\n",accumulatore);
+			puntatore++;
+                        break;
+			
+			case 33:  // MOLTIPLICA LA PAROLA CONTENUTA IN UNA SPEFICA LOCAIZONE DI MEMORIA DA QUELLA CONTENUTA NELL'ACCUMULATORE (LASCIANDO IN QUESTO IL RISULTATO)
+			accumulatore *= memory[posizione(memory[puntatore])];
+			printf("\nValore accumulatore: %d\n",accumulatore);
+			puntatore++;
+                        break;
+
+			case 40:  // SALTA AD UNA SPECIFICA LOCAIZONE DI MEMORIA
+			puntatore  = posizione(memory[puntatore]);
+                        break;
+			
+			case 41:  // SALTA AD UNA SPECIFICA LOCAZIONE DI MEMORIA SE L'ACCUMULATORE CONTIENE UN VALORE NEGATIVO
+			if(accumulatore < 0)
+				puntatore  = posizione(memory[puntatore]);
+			else
+				puntatore++;
+			break;
+
+			case 42:  // SALTA AD UNA SPECIFICA LOCAZIONE DI MEMORIA SE L'ACCUMULATORE CONTIENE UN VALORE UGUALE A ZERO
+			if(accumulatore == 0)
+                        	puntatore  = posizione(memory[puntatore]);
+			else
+				puntatore++;
+                        break;
+
+			case 43:  // TERMINA L'ESECUZIONE
+			printf("\nBye!\n");
+			break;
+
+			default:
+			printf("\nDato o istruzione errata: %d\n",memory[puntatore]);
+			puntatore++;
+			break;
+
+		}
+
+		visualizza_sorgenti(memory);
+
+		if(istruzione(memory[puntatore]) == 43)
+			break;
+	}
+
 }
 
 int istruzione(int number){
@@ -115,4 +292,15 @@ int istruzione(int number){
 
 int posizione(int number){
   return number % 100;
+}
+
+int check(int memory[SIZE]){
+
+	int count, ret = 0;
+
+	for(count = 0; count <= SIZE - 1; count++)
+		if(memory[count] != 0)
+			ret = 1;
+	
+	return ret;
 }
