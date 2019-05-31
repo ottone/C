@@ -13,7 +13,7 @@
 sort), di bucket sort e per selezione (selection sort). Presenteremo ora una tecnica ricorsiva di ordinamento chiamata
 Quicksort (ordinamento veloce). L'algoritmo fornamentale per un vettore di valori unidimensionale è il seguente:
 
-		1) Passo di rapartizione: prendete il primo elemento di un vettore disordinato e determinate la sua po
+		1) Passo di ripartizione: prendete il primo elemento di un vettore disordinato e determinate la sua po
 		   sizione finale in quello ordinato. Ciò avverrà quando tutti i valori del sottovettore sinistro, 
 		   rispetto all'elemento, gli saranno inferiori e tutti quelli del sottovettore destro gli saranno 
 		   superiori. A questo punto avremo un elemento sistemato nella sua giusta posizione e due sottovettori 
@@ -67,13 +67,13 @@ eseguire il passo di ripartizione.
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define SIZE 4
+#define SIZE 10
 
 
-//void partition(int [],int, int);
+void partition(int [],int, int);
 void swap(int *,int *);
 void stampa(int[]);
-void quicksort(int [],int, int);
+int quicksort(int [],int, int);
 
 int main(){
 
@@ -88,7 +88,8 @@ srand(time(NULL));
 	for(count = 0; count < SIZE; count++)
 		printf("v[%d] : %d\n",count,v[count]);
 
-	quicksort(v , 0, SIZE -1);
+	//quicksort(v , 0, SIZE -1);
+	partition(v,0,SIZE-1);
 
 	printf("\nDopo di quicksort():\n");
 	for(count = 0; count < SIZE; count++)
@@ -99,7 +100,82 @@ return 0;
 
 // Funzione quicksort e partition 
 
+int quicksort(int v[],int l, int r){
+   
+	int  s = l, d = r;
+
+	if(l == r)
+		return l;
+	else if(s < d){
+		if(v[s] > v[d]){ 
+			swap(&v[s],&v[d]);
+			s++;
+			quicksort(v,d,s);
+		}else{
+			d--;
+			quicksort(v,s,d);
+		}	
+	}else{//(s > d)
+		if(v[s] < v[d]){
+		       	swap(&v[s],&v[d]);
+			s--;
+			quicksort(v,d,s);
+		}else{
+			d++;
+			quicksort(v,d,s);
+		}
+	}
+		
+
+}
+
+void partition(int v[], int l, int r){
+   
+	int i;// = quicksort(v,l,r);
+	
+	if(l == r)
+		return;
+	else{
+		i = quicksort(v,l,r);
+		if (i > l) partition(v,l,i-1);	
+		if (i < r) partition(v,i+1,r);
+	}
+	
+	
+
+}	
+
+
 /*
+
+// Funzione quicksort e partition di Algoritmi in C
+
+void quicksort(int v[], int l, int r){
+
+	int i;
+
+	if(r <= l) return;
+
+	i = partition(v, l, r);
+	quicksort(v, l, i-1);
+	quicksort(v, i+1, r);
+}
+
+int partition(int a[], int l, int r){
+	
+	int i = l-1, j = r, v = a[r];
+	
+	for(;;){
+		while (a[++i] < v) ;
+		while (v < a[--j]) if(j == l) break;
+		if(i >= j) break;
+		swap(&a[i],&a[j]);
+		}
+
+	swap(&a[i],&a[r]);
+	return i;
+	}
+}
 
 // Funzione quicksort Kerningham & Ritchie
 
