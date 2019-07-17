@@ -8,12 +8,12 @@ struct clientData {
    float balance;
 };
 
-main()
+int main()
 {
    FILE *cfPtr;
    struct clientData client;
 
-   if ((cfPtr = fopen("credit.dat", "r+")) == NULL)
+   if ((cfPtr = fopen("credit.dat", "w")) == NULL)
       printf("File could not be opened.\n");
    else {
       printf("Enter account number (1 to 100, 0 to end input)\n? ");
