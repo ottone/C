@@ -1,9 +1,110 @@
 //
 //  main.c
-//  Exe12.27
+//  Exe12.30
 //
-//  Created by Francesco Parrucci on 09/08/19.
+//  Created by Francesco Parrucci on 28/08/19.
 //  Copyright © 2019 Francesco Parrucci. All rights reserved.
+//
+//  (Un interprete di Semplice) Un interprete è un programmma che legge un'istruzione di un codice scritto in un linguaggio di alto livello, determina l'operazione da eseguire per quell'istruzione e la esegue immediatamente.
+//  Dunque il programma non sarà convertito prima in linguaggio macchina. Gli interpreti lavorano lentamente, perchè ogni istruzione incontrata nel programma dovrà prima essere decifrata. Nel caso in cui le istruzioni siano 
+//  contenute in un ciclo, queste saranno decifrate ogni volta che verranno incontrate all'interno del ciclo. Le prime versioni del linguaggio di programmazione BASIC furono implementate proprio come interpreti.
+//  Scrivete un interprete per il linguaggio Semplice discusso nell'Esercizio 12.26. Il programma dovrà usare il convertitore da notazione infissa a polacca inversa, che avete sviluppato nell'Esercizio 12.12, e la funzione di
+//  valutazione di espressioni in notazione polacca inversa, che avete sviluppato nell'Esercizio 12.13, per valutare le espressioni di un'istruzione let. In questo programma, dovranno essere adottate le stesse restrizioni 
+//  imposte dall'Esercizio 12.26 al linguaggio Semplice. Verificate il funzionamento dell'interprete con il programma in linguaggio Semplice scritto nell'Esercizio 12.26. 
+//  Confrontate i risultati ottenuti dall'esecuzione interpretata di questo programma, con quelli ottenuti mediante la sua compilazione ed esecuzione con il sumulatore Simpletron costuito nell'Esercizio 7.19.
+//
+//  ============================================================================================================================================================================================================================
+//
+//  (Modifiche al compilatore Semplice) Apportare le seguenti modifiche al compilatore di Semplice. Alcune di esse potrebbero anche richiedere delle variazioni al Simulatore Simpletron scritto nell'Esercizio 7.19.
+//
+//  a) Consentite l'uso dell'operatore modulo (%) nelle istruzioni let. Il Linguaggio Macchina Simpletron dovrà essere modificato per includere l'istruzione modulo.
+//
+//  b) Consentite l'elevamento a potenza nelle istruzioni let, usando il simbolo ^ come operatore di elevamento a potenza. Il Linguaggio Macchina Simpletron dovrà essere modificato per di elevamento a potenzaì. Il Linguaggio
+//     Macchina Simpletron dovrà essere modificato per includere l'istruzione di elevamento a potenza.
+//
+//  c) Consentite al compilatore di riconoscere le lettere maiuscole e minuscole nelle istruzioni di Semplice ( per esempio, 'A' è equivalente ad 'a'). Non saranno necessarie modifiche al Simulatore Simpletron.
+//
+//  d) Consentite all'istruzione input di leggeree valori per variabili multiple come input x, y. Non saranno necessarie modifiche al Simulatore Simpletron.
+//
+//  e) Consentite al compilatore di visualizzare valori multipli in una singola istruzione print come print a, b, c. Non saranno necessarie modifiche al Simulatore Simpletron. 
+//
+//  f) Aggiungete al compilatore la capacità di verificare la sintassi, in modo che siano visualizzati dei messaggi, qualora fossero riscontrati degli errori di sintassi all'interno di un programma in linguaggio Semplice. 
+//     Non saranno necessarie modifiche al Simulatore Simpletron. 
+//
+//  g) Implementate i vettori di interi. Non saranno necessarie modifiche al Simulatore Simpletron.
+//
+//  i) Implementate le subroutine specificate dai comandi di Semplice gosub e return. Il comando gosub passerà il controllo del programma a una subroutine, mentre il comando return lo restituirà all'istruzione successiva alla 
+//     gosub. Questo meccanismo è simile alla chiamata di funzione del C. Una stessa subroutine potrà essere richiamata da molte gosub distribuite in tutto il programma. Non saranno richieste modifiche al Simulatore Simpletron.
+//
+//  j) Implementate le strutture di iterazione secondo il formato 
+//
+//     for x = 2 to 10 step 2
+//     	   istruzioni in linguaggio Semplice
+//     next
+//
+//     L'istruizione for itera da 2 a 10 con un incremento di 2. La riga next indica la fine del corpo del for. Non saranno richieste al Simulatore Simpletron. 
+//
+//  k) Implementate le strutture di iterazione secondo il formato 
+//
+//     for x = 2 to 10 
+//     	   istruzioni in linguaggio Semplice
+//     next
+//  L'istruzione for itera da 2 a 10 con un incremento predefinito di 1. Non saranno richieste modifiche al Simulatore Simpletron.
+//
+//  l) Consentite al compilatore di elaborare l'input e l'output delle stringhe. Ciò richiederà la modifica del Simulatore Simpletron per consentirgli di elavorare e immagazzinare i valori di tipo Stringa. Consiglio ogni parola
+//     del Simpletron potrà essere divisa in due gruppi che contengano un intero di due cifre.  Ogni intero di due cifre rappresenterà il valore decimale ASCII equivalente a un carattere. Aggiungete un'istruzione in linguaggio 
+//     macchina che possa visualizzare una stringa cominciando da una certa posizione della mimoria del Simpletron. La prima metà della parola in quella posizione corrisponderà al numero di caratteri presenti nella stringa 
+//     (ovverosia, alla sua lunghezza). Ogni successiva mezza parola conterrà un carattere ASCII espresso con due cifre decimali. L'istruzione in lunguaggio macchina constrollerà la lunghezza e visualizzerà la stringa, traducendo
+//     ogni numero di due cifre nel carattere corrispondente.
+//
+//  m) Consentite al compilatore di elaborare i valori in virgola mobile, oltre a quelli interi. Anche il Simulatore Simpletron dovrà essere modificato per consentirgli di elaborare i valori in virgola mobile.
+//
+//  ==================================================================================================================================================================================================================================
+//
+//  (Ottimizzate il compilatore di Semplice) Quando un programma sarà compilato e convertito in LMS, sarà generato un insieme di istruzioni. Certe combinazioni di istruzioni si ripeteranno spesso, di solito in triplette dette
+//  produzioni. Queste saranno normalmente formate da tre istruzioni come load, add e store. Per esempio, la Figura 12.30 mostra cinque delle istruzioni LMS che sono state generate durante la compilazione del programma nella Figura 
+//  12.28. Le prime tre istruzioni corrispondono alla produzione che aggiunge 1 a y. Osservate che le istruzioni 06 e 07 immagazzinano il valore dell'accumulatore nella posizione temporanea 96 e poi lo ricaricano nuovamente nell'
+//  accumulatore, in modo che l'istruzione 08 possa immagazzinarlo nella posizione 98. Spesso una produzione è seguita da un'istruzione di caricamento che operano sulla stessa posizione di memoria. L'ottimizzazione consentirà 
+//  al Simpletron di eseguire piu velocemente il programma, poichè in questa versione ci saranno meno istruzioni. La Figura 12.31 mostra il codice LMS ottimizzato per il programma della Figura 12.28. Osservate che nel codice 
+//  ottimizzato ci sono quattro istruzioni in meno: un risparmio di memoria del 25 %.
+//  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  04 + 2098 (load)
+//  05 + 3097 (add)
+//  06 + 2196 (store)
+//
+//  07 + 2096 (load)
+//  08 + 2198 (store)
+//  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  Figura 12.30 Codice non ottimizzato tratto dal programma in Figura 12.28
+//
+//  Modificate il compilatore in modo da offrire un'opzione di ottimizzazione del codice generato in Linguaggio Macchina Simpletron. Confrontate manualmente il codice non ottimizzato e quello ottimizzato e calcolate la percentuale
+//  di riduzione.
+//  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  Programma in semplice					Posizione e istruzione in LMS Descrizione
+//  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  5  rem aggiunge 1  a x					nessuna 	rem ignorata
+//  10 input x							00 +1099	legge x nella posizione 99
+//  15 rem verifica se y == x					nessuna		rem ignorata
+//  20 if y == x goto 60					01 + 2098	carica y (98) nell'accumulatore
+//  								02 + 3199	sottrae x (99) dall'accumulatore 
+//  								03 + 4211	se zero, salta alla posizione 11 
+//  25 rem incrementa y						nessuna		rem ignorata
+//  30 let y = y + 1						04 + 2098	carica y nell'accumulatore
+//  								05 + 3097	aggiunge 1 (97) all'accumulatore
+//  								06 + 2198	immagazzina l'accumulatore in y (98)
+//  35 rem aggiunge y al totale					nessuna		rem ignorata
+//  40 let t = t + y						07 + 2096	carica t dalla locaizone (96)
+//  								08 + 3098	aggiunge y (98) all'accumulatore 
+//  								09 + 2196 	immagazzina l'accumulatore in t (96)
+//  45 rem ciclo y						nessuna		rem ignorata
+//  50 goto 20							10 + 4001	salta alla posizione 01
+//  55 rem visualizza il risultato 				nessuna		rem ignorata
+//  60 print t							11 + 1196	visualizza t (96) sullo schermo
+//  99 end							12 + 4300	termina l'esecuzione.
+//  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  Figura 12.31 Il codice ottimizzato per il programma della Figura 12.28
+//
+//  ==================================================================================================================================================================================================================================
 //
 //  (Costruite un compilatore; Prerequisiti: completate gli Esercizi 7.18, 7.19, 12.12 , 12.13 e 12.26) Ora che il linguaggio Semplice è stato presentato (Esercizio 12.26), discuteremo di come costruire il nostro compilatore di 
 //  Semplice. In primo luogo, considereremo il processo attraverso il quale un programma in linguaggio Semplice sarà convertito  in LMS ed eseguito dal simulatore Simpletron (consultate la Figura 12.27). Un file contenente un 
@@ -334,10 +435,11 @@
 //
 //  end 	99 end						Terminerà l'esecuzione del programma.
 //
-//  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  Prendiamo ora in considerazione alcuni programmi scritti in linguaggio Semplice che dimostreranno le caratteristiche di quest'ultimo. Il primo programma (Figura 12.24) leggerà due interi dalla tastiera, immagazzinerà i loro 
 //  valori nelle variabili a e b e calcolerà e visualizzerà la loro somma (immagazzinata nella variabile c).
-//  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//
 //
 //  10 rem 	determinare e visualizzare la somma di due interi
 //  15 rem
@@ -374,8 +476,9 @@
 //  80 rem 	s è maggiore o uguale a t, perciò visualizza s
 //  90 print s
 //  99 end
-//  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  Figura 12.25 Trovare il maggiore di due interi.
+//
 //  Il Semplice non fornisce una struttura di iterazione (come for, while o do/while del C). Tuttavia, può simulare ogni struttura di iterazione del C, usando le istru
 //  zioni if/goto e goto. La figura 12.26 userà un ciclo controllato da un valore sentinella per calcolare i quadrati di vari interi. Ogni intero sarà preso in input
 //  dalla tastiera e immagazzinato nella variabile j. Qualora il valore immesso corrisponda a quello di guardia -9999, il controllo sarà trasferito alla riga 99  dove
@@ -485,7 +588,8 @@
 //  45 print a
 //  50 end
 // 
-
+//  ===================================================================================================================================================================================================================================
+//
 // SVILUPPO TOP DOWN
 //
 // Variabili d'ambiente:
@@ -662,10 +766,10 @@
 #include <ctype.h>
 #include "polacca.c"
 #include "editSimple.c"
-#include "simpletron.c"
+#include "simpletron_modificato.c"
 
 
-#define SIZE 100
+#define SIZE 1000 
 
 struct tableEntry{
 	int symbol;	// è l'intero che conterrà la rappresentazione ASCII di una variabile (cararttere singolo), un numero di riga o una costante. 
@@ -680,17 +784,19 @@ void initTable(tableEntry T[]);
 void initflags(int []);
 void printTable(tableEntry []);
 void printFlag(int []);
-void printMemory(int []);
+void printMemory(float []);
 int search(tableEntry[], int);
-void evaluatePostfixExpression(char *expr,tableEntry T[],int *countVariable,int *countInstruction, int memory[], int returned);      //  Valuterà l'espressione in notaizone polacca inversa.
+void evaluatePostfixExpression(char *expr,tableEntry T[],int *countVariable,int *countInstruction, float memory[], int returned);  //  Valuterà l'espressione in notaizone polacca 
+void evaluatePostfixExpressionOptimazed(char *expr,tableEntry T[],int *countVariable, int *countInstruction,float memory[], int returned);    //  Valuterà l'espressione in notaizone polacca inversa con ottimizzazione della memoria
 
 int main(){
 
 struct tableEntry T[SIZE];	// Tabella dei simboli T
 
-int memory[SIZE] = {0};		// Memoria del Simpletron 
+float memory[SIZE] = {0};		// Memoria del Simpletron 
+
 int flags[SIZE] = {-1};		// Vettore delle segnalazioni flag
-int countVariable = 99;		// Contatore Variabili e costanti
+int countVariable = 799;	// Contatore Variabili e costanti
 int countInstruction = 0;	// Contatore istruzioni
 int count = 0;			// Contatore tabella simboli
 int op1 = 0, op2 = 0, jump = 0, lms = 0;
@@ -733,7 +839,7 @@ int c;
      }else{
                 fread(&temp,sizeof(inStruction),1,ptFILE);
 		while(!feof(ptFILE)){
-                        printf("%2d %s",temp.line, temp.ist);
+                        //printf("%2d %s",temp.line, temp.ist);
 			//getchar();
 			strcpy(v,temp.ist);
 			strcpy(buf,v);
@@ -750,7 +856,7 @@ int c;
 				T[count].symbol = atoi(num);
 				T[count].type = 'L';
 				T[count].position = countInstruction;
-				lms = 1100 + search(T,op[0]);
+				lms = 11000 + search(T,op[0]);
 				memory[countInstruction] = lms;
 				countInstruction++;
 				count++;
@@ -767,7 +873,7 @@ int c;
 				T[count].type = isalpha(op[0]) ? 'V' : 'C';
 				T[count].position = countVariable;
 				count++;
-				lms = 1000 + countVariable;
+				lms = 10000 + countVariable;
 				memory[countInstruction] = lms;
 				countInstruction++;
 				countVariable--;
@@ -782,11 +888,11 @@ int c;
 				count++;
 				jump = atoi(op);
 				if(search(T,jump) == 0){
-					lms = 4000;
+					lms = 40000;
 					memory[countInstruction] = lms;
 					flags[countInstruction] = jump;
 				}else{
-					lms = 4000 + search(T,jump);
+					lms = 40000 + search(T,jump);
 					memory[countInstruction] = lms;
 				}
 				countInstruction++;
@@ -810,7 +916,7 @@ int c;
 				
 				
 				if(T[count].type == 'V'){
-					lms = 1000 + countVariable;
+					lms = 10000 + countVariable;
 					memory[countInstruction++] = lms;
 					/*printf("\nIstruzione inserita : %4d",lms);*/
 				}else{
@@ -830,7 +936,7 @@ int c;
 					T[count].type = isalpha(ptr[0]) ? 'V' : 'C';
 					T[count].position = countVariable;
 					if(T[count].type == 'V'){
-						lms = 1000 + countVariable;
+						lms = 10000 + countVariable;
 						memory[countInstruction++] = lms;
 						/*printf("\nIstruzione inserita : %4d",lms);*/
 					}else{
@@ -847,19 +953,19 @@ int c;
 	
 				if(strcmp(match,"==") == 0){ // se deve confrontare l'uguaglianza di due numeri
 					/*printf("\nValore di op1 : %3d",op1);*/
-					lms = 2000 + search(T,op1); 
+					lms = 20000 + search(T,op1); 
 					memory[countInstruction] = lms;
 					countInstruction++;
 					/*printf("\nCarica nell'accumulatore il valore del primo operando: %4d ",lms);*/
-					lms = 3100 + search(T,op2);
+					lms = 31000 + search(T,op2);
 					memory[countInstruction] = lms;
 					countInstruction++;
 					/*printf("\nSottrae al primo valore quello del secondo : %4d",lms);*/
 					if(search(T,jump) != 0){
-						lms = 4200 + search(T,jump);
+						lms = 42000 + search(T,jump);
 						/*printf("\nSalta ad una specifica locazione di memoria: %4d",lms);*/
 					}else{
-						lms = 4200;
+						lms = 42000;
 						flags[countInstruction] = jump;
 						/*printf("\nImposta l'istruzione lms pari a %4d e imposta flags[%d] = %d",lms,countInstruction,flags[countInstruction]);*/
 					}
@@ -869,19 +975,19 @@ int c;
 			
 				}else if(strcmp(match,"<") == 0){ // se deve confrontare l'uguaglianza di due numeri
 					/*printf("\nValore di op1 : %3d",op1);*/
-					lms = 2000 + search(T,op1); 
+					lms = 20000 + search(T,op1); 
 					memory[countInstruction] = lms;
 					countInstruction++;
 					/*printf("\nCarica nell'accumulatore il valore del primo operando: %4d ",lms);*/
-					lms = 3100 + search(T,op2);
+					lms = 31000 + search(T,op2);
 					memory[countInstruction] = lms;
 					countInstruction++;
 					/*printf("\nSottrae al primo valore quello del secondo : %4d",lms);*/
 					if(search(T,jump) != 0){
-						lms = 4100 + search(T,jump);
+						lms = 41000 + search(T,jump);
 						/*printf("\nSalta ad una specifica locazione di memoria: %4d",lms);*/
 					}else{
-						lms = 4100;
+						lms = 41000;
 						flags[countInstruction] = jump;
 						/*printf("\nImposta l'istruzione lms pari a %4d e imposta flags[%d] = %d",lms,countInstruction,flags[countInstruction]);*/
 					}
@@ -891,19 +997,19 @@ int c;
 			
 				}else if(strcmp(match,">") == 0){ // se deve confrontare l'uguaglianza di due numeri
 					/*printf("\nValore di op2 : %3d",op2);*/
-					lms = 2000 + search(T,op2); 
+					lms = 20000 + search(T,op2); 
 					memory[countInstruction] = lms;
 					countInstruction++;
 					/*printf("\nCarica nell'accumulatore il valore del primo operando: %4d ",lms);*/
-					lms = 3100 + search(T,op1);
+					lms = 31000 + search(T,op1);
 					memory[countInstruction] = lms;
 					countInstruction++;
 					/*printf("\nSottrae al primo valore quello del secondo : %4d",lms);*/
 					if(search(T,jump) != 0){
-						lms = 4100 + search(T,jump);
+						lms = 41000 + search(T,jump);
 						/*printf("\nSalta ad una specifica locazione di memoria: %4d",lms);*/
 					}else{
-						lms = 4100;
+						lms = 41000;
 						flags[countInstruction] = jump;
 						/*printf("\nImposta l'istruzione lms pari a %4d e imposta flags[%d] = %d",lms,countInstruction,flags[countInstruction]);*/
 					}
@@ -935,7 +1041,7 @@ int c;
 						T[count].type = isalpha(v[jump]) ? 'V' : 'C';
 						T[count].position = countVariable;
 						if(T[count].type == 'V'){
-							lms = 1000 + countVariable;
+							lms = 10000 + countVariable;
 							memory[countInstruction++] = lms;
 							//printf("\nIstruzione inserita : %4d",lms);
 						}else{
@@ -958,10 +1064,14 @@ int c;
 
 					memmove(v,v+4,strlen(v));
 					strcpy(buf,v);
+					//puts(v);
 					convertToPostfix(v,postfix);
+					printf("\nEspressione convertita in notazione polacca inversa: %s\n",postfix);
+					getchar();
+					getchar();
 					//printf("\nEspressione :%s. Ora che sono inserite costanti e variabili la trasformo in notazione polacca inversa... %s\n",buf,postfix);	
 					//printf("... ora generiamo le istruzioni in semplice...\n");
-					evaluatePostfixExpression(postfix,T,&countVariable,&countInstruction,memory,returned);     //  Valuterà l'espressione in notaizone polacca inversa.
+					evaluatePostfixExpressionOptimazed(postfix,T,&countVariable,&countInstruction,memory,returned);     //  Valuterà l'espressione in notaizone polacca inversa.
 					//puts(postfix);	
 
 			}else if(strcmp(ist,"end") == 0){
@@ -969,12 +1079,34 @@ int c;
 					T[count].symbol = atoi(num);
 					T[count].type = 'L';
 					T[count].position = countInstruction;
-					lms = 4300;
+					lms = 43000;
+					memory[countInstruction] = lms;
+					countInstruction++;
+					count++;
+
+			}else if(strcmp(ist,"puts") == 0){
+					//printf("\nIstruzione puts per inserire del testo\n");
+					ptr = strtok(NULL," ");
+					strcpy(op,ptr);
+					T[count].symbol = atoi(num);
+					T[count].type = 'L';
+					T[count].position = countInstruction;
+					lms = 36000 + atoi(op);
+					memory[countInstruction] = lms;
+					countInstruction++;
+					count++;
+			}else if(strcmp(ist,"echo") == 0){
+					//printf("\nIstruzione echo per stampare del testo\n");
+					ptr = strtok(NULL," ");
+					strcpy(op,ptr);
+					T[count].symbol = atoi(num);
+					T[count].type = 'L';
+					T[count].position = countInstruction;
+					lms = 37000 + atoi(op);
 					memory[countInstruction] = lms;
 					countInstruction++;
 					count++;
 			}else if (strcmp(ist,"rem") == 0){					// rem
-	
 					//puts("Istruizone rem");
 					T[count].symbol = atoi(num);
 					T[count].type = 'L';
@@ -998,7 +1130,7 @@ int c;
 	printMemory(memory);
 	putchar('\n');
 
-	/*
+	
      	strcat(name,"_LMS");
 
 	// SALVATAGGIO DELLE ISTRUZIONI LMS IN FILE
@@ -1008,13 +1140,13 @@ int c;
 	}else{
      	 	printf("\nSalvataggio istruzioni LMS nel file %s...\n",name);
 		printMemory(memory);
-		fwrite(memory,sizeof(char),100,ptFILE);
+		fwrite(memory,sizeof(char),SIZE,ptFILE);
 		fclose(ptFILE);
 	}
 	
 	// CANCELLAZIONE DELLA MEMORIA DEL SIMPLETRON
 
-	for(c = 0; c <= 99; c++)
+	for(c = 0; c < SIZE; c++)
 		memory[c] = 0;
 
 	// LETTURA DEL FILE CON LE STRUZIONI LMS
@@ -1023,7 +1155,7 @@ int c;
 		printf("\nImpossibile salvare le istruzioni...");
 	}else{
 		printf("\n...Lettura dei file %s...\n",name);
-		fread(memory,sizeof(char),100,ptFILE);
+		fread(memory,sizeof(char),SIZE,ptFILE);
 		fclose(ptFILE);
 	}
 
@@ -1036,7 +1168,7 @@ int c;
 	print_start();
 	getchar();  
 	simpletron(memory); 
-	*/
+	
 
 return 0;
 }
@@ -1061,11 +1193,11 @@ void printFlag(int flags[]){
 
 }
 
-void printMemory(int mem[]){
+void printMemory(float mem[]){
 
 	int i;
 	for(i = 0; i < SIZE; i++)
-		if(mem[i]) printf("\nMemory[%2d] -- > %2d",i,mem[i]);
+		if(mem[i]) printf("\nMemory[%2d] -- > %.0f",i,mem[i]);
 
 }
 
@@ -1098,14 +1230,18 @@ for(i = 0; i < SIZE; i++)
 
 }
 
-void evaluatePostfixExpression(char *expr,tableEntry T[],int *countVariable, int *countInstruction, int memory[], int returned){      //  Valuterà l'espressione in notaizone polacca inversa.
+void evaluatePostfixExpression(char *expr,tableEntry T[],int *countVariable, int *countInstruction, float memory[], int returned){      //  Valuterà l'espressione in notaizone polacca inversa.
  
  int i = 0, op2 , temp = 0, lms, accumulator = 0;
 
  /*printf("\n\n ----------------- Inizio valutazione espressione in notazione polacca inversa ------------------ \n\n");*/
  
  while(expr[i] != '\0'){
- 
+	
+	 printf("\nValore di expr[i] = %c\n",expr[i]);
+	 getchar();
+	 getchar();
+
          if((isdigit(expr[i]) || isalpha(expr[i])) && accumulator == 0 && temp == 0){
                  /*printf("Inserisco il valore nell'accumulatore: %4d ",*/lms = 2000 + search(T,expr[i]);
 		 memory[*countInstruction] = lms;
@@ -1123,22 +1259,24 @@ void evaluatePostfixExpression(char *expr,tableEntry T[],int *countVariable, int
                  op2 = search(T,expr[i]);
                  //printf("\nIndividuo un altro operando: %2d",op2);
 		 i++;
-         }else if(expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/'){ 		// operazione
-                 //printf("\nOperatore : %c",expr[i]);
-                
-		 if(expr[i] == '+') 		 /*printf("\nIstruzioni per la somma %4d",*/lms = 3000 + op2;
-		 else if(expr[i] == '-')	 /*printf("\nIstruzioni per la sottrazione %4d",*/lms = 3100 + op2;
-		 else if(expr[i] == '*')	 /*printf("\nIstruzioni per la moltiplicazione %4d",*/lms = 3300 + op2;
-		 else if(expr[i] == '/')	 /*printf("\nIstruzioni per la divisione %4d",*/lms = 3200 + op2;
-		 
+         }else if((expr[i] == '+') || (expr[i] == '-') || (expr[i] == '*') || (expr[i] == '/') || (expr[i] == '^') || (expr[i] == '%')){ // operazione
+                 
+		 printf("\nOperatore : %c",expr[i]);
+                 if(expr[i] == '+') 		 /*printf("\nIstruzioni per la somma %4d",*/lms = 30000 + op2;
+		 else if(expr[i] == '-')	 /*printf("\nIstruzioni per la sottrazione %4d",*/lms = 31000 + op2;
+		 else if(expr[i] == '*')	 /*printf("\nIstruzioni per la moltiplicazione %4d",*/lms = 33000 + op2;
+		 else if(expr[i] == '/')	 /*printf("\nIstruzioni per la divisione %4d",*/lms = 32000 + op2;
+		 else if(expr[i] == '%')	 /*printf("\nIstruzioni per il modulo %4d",*/lms = 34000 + op2;
+		 else if(expr[i] == '^')	 /*printf("\nIstruzioni per l'elevamento a potenza %4d",*/lms = 35000 + op2;
+		
 		 memory[*countInstruction] = lms;
 		 (*countInstruction)++;
-                 /*printf("\nSposto la somma nella memoria del Simpletron %4d",*/lms = 2100 + *countVariable;
-		 memory[*countInstruction] = lms;
+                 /*printf("\nSposto la somma nella memoria del Simpletron %4d",*/lms = 21000 + *countVariable;   // Istruzione da eliminare per l'ottimizzazione del compilatore
+		 memory[*countInstruction] = lms;								// Istruzione da eliminare per l'ottimizzazione del compilatore								
 		 (*countInstruction)++;
-                 temp = *countVariable;
-                 (*countVariable)--;
-                 accumulator = 0;
+                 temp = *countVariable;		// temp archivia il valore di countVariable perchè successivamente serve sapere da quale quale posizione della memoria riprendere l'operatore
+                 (*countVariable)--;            // Decremento di countVariable per conteggio delle variabili archiviate.
+                 accumulator = 0;		// accumulator uguale a 0 perchè abbiamo spostato il valore dall'accumulatore ad una locazione di memoria
                  i++;
          }else{
                  i++;
@@ -1146,11 +1284,68 @@ void evaluatePostfixExpression(char *expr,tableEntry T[],int *countVariable, int
  	} 
  }
 
- if(temp != 0){
- 	/*printf("\nGiro terminato riporto il valore nell'accumulatore %4d",*/ memory[*countInstruction] =  2000 + temp;
- 	(*countInstruction)++; 
+ /*printf("\nGiro terminato riporto il valore nell'accumulatore %4d", memory[*countInstruction] =  2000 + temp;*/
+ /*(*countInstruction)++; */
+ /*printf(" e assegno il valore contenuto nell'accumulatore : %4d",*/ memory[*countInstruction] =  21000 + search(T,returned);
+ (*countInstruction)++;
+ //printf("\n\n ----------------- Termine valutazione espressione in notazione polacca inversa ------------------ \n\n");
+
+}
+
+
+void evaluatePostfixExpressionOptimazed(char *expr,tableEntry T[],int *countVariable, int *countInstruction, float memory[], int returned){// Valuterà l'espressione in notaizone polacca inversa.
+ 
+ int i = 0, op2 , temp = 0, lms, accumulator = 0;
+
+ /*printf("\n\n ----------------- Inizio valutazione espressione in notazione polacca inversa ------------------ \n\n");*/
+ 
+ while(expr[i] != '\0'){
+ 
+         if((isdigit(expr[i]) || isalpha(expr[i])) && accumulator == 0 && temp == 0){
+                 /*printf("Inserisco il valore nell'accumulatore: %4d ",*/lms = 20000 + search(T,expr[i]);
+		 memory[*countInstruction] = lms;
+		 (*countInstruction)++;
+                 accumulator = 1;
+                 i++;
+	}/*else if(temp != 0 && (isdigit(expr[i]) || isalpha(expr[i])) && accumulator == 0){
+                 printf("\nRiporto nell'accumulatore il valore precendentemente archiviato %4d ",lms = 20000 + temp;
+		 memory[*countInstruction] = lms;
+		 (*countInstruction)++;
+                 temp = 0;
+                 accumulator = 1;
+                 i++;
+         }*/else if((isdigit(expr[i]) || isalpha(expr[i])) && accumulator != 0){
+                 op2 = search(T,expr[i]);
+                 //printf("\nIndividuo un altro operando: %2d",op2);
+		 i++;
+         }else if(expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/' || expr[i] == '^' || expr[i] == '%'){ // operazione
+                 //printf("\nOperatore : %c",expr[i]);
+                
+		 if(expr[i] == '+') 		 /*printf("\nIstruzioni per la somma %4d",*/lms = 30000 + op2;
+		 else if(expr[i] == '-')	 /*printf("\nIstruzioni per la sottrazione %4d",*/lms = 31000 + op2;
+		 else if(expr[i] == '*')	 /*printf("\nIstruzioni per la moltiplicazione %4d",*/lms = 33000 + op2;
+		 else if(expr[i] == '/')	 /*printf("\nIstruzioni per la divisione %4d",*/lms = 32000 + op2;
+		 else if(expr[i] == '%') 	 /*printf("\nIstruzioni per l'elevamento a potenza %4d",*/lms = 34000 + op2;
+		 else if(expr[i] == '^') 	 /*printf("\nIstruzioni per il modulo %4d",*/lms = 35000 + op2; 
+		 
+		 memory[*countInstruction] = lms;
+		 (*countInstruction)++;
+                 /*printf("\nSposto la somma nella memoria del Simpletron %4d",lms = 21000 + *countVariable; */  // Istruzione da eliminare per l'ottimizzazione del compilatore
+		 //memory[*countInstruction] = lms;								// Istruzione da eliminare per l'ottimizzazione del compilatore								
+		 //(*countInstruction)++;
+                 //temp = *countVariable;		// temp archivia il valore di countVariable perchè successivamente serve sapere da quale quale posizione della memoria riprendere l'operatore
+                 //(*countVariable)--;            // Decremento di countVariable per conteggio delle variabili archiviate.
+                 //accumulator = 0;		// accumulator uguale a 0 perchè abbiamo spostato il valore dall'accumulatore ad una locazione di memoria
+                 i++;
+         }else{
+                 i++;
+ 
+ 	} 
  }
- /*printf(" e assegno il valore contenuto nell'accumulatore : %4d",*/ memory[*countInstruction] =  2100 + search(T,returned);
+
+ /*printf("\nGiro terminato riporto il valore nell'accumulatore %4d",*/ //memory[*countInstruction] =  20000 + temp;
+ //(*countInstruction)++; 
+ /*printf(" e assegno il valore contenuto nell'accumulatore : %4d",*/ memory[*countInstruction] =  21000 + search(T,returned);
  (*countInstruction)++;
  //printf("\n\n ----------------- Termine valutazione espressione in notazione polacca inversa ------------------ \n\n");
 

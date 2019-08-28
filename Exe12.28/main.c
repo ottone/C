@@ -1,9 +1,55 @@
 //
 //  main.c
-//  Exe12.27
+//  Exe12.28
 //
-//  Created by Francesco Parrucci on 09/08/19.
+//  Created by Francesco Parrucci on 27/08/19.
 //  Copyright © 2019 Francesco Parrucci. All rights reserved.
+//
+//  (Ottimizzate il compilatore di Semplice) Quando un programma sarà compilato e convertito in LMS, sarà generato un insieme di istruzioni. Certe combinazioni di istruzioni si ripeteranno spesso, di solito in triplette dette
+//  produzioni. Queste saranno normalmente formate da tre istruzioni come load, add e store. Per esempio, la Figura 12.30 mostra cinque delle istruzioni LMS che sono state generate durante la compilazione del programma nella Figura 
+//  12.28. Le prime tre istruzioni corrispondono alla produzione che aggiunge 1 a y. Osservate che le istruzioni 06 e 07 immagazzinano il valore dell'accumulatore nella posizione temporanea 96 e poi lo ricaricano nuovamente nell'
+//  accumulatore, in modo che l'istruzione 08 possa immagazzinarlo nella posizione 98. Spesso una produzione è seguita da un'istruzione di caricamento che operano sulla stessa posizione di memoria. L'ottimizzazione consentirà 
+//  al Simpletron di eseguire piu velocemente il programma, poichè in questa versione ci saranno meno istruzioni. La Figura 12.31 mostra il codice LMS ottimizzato per il programma della Figura 12.28. Osservate che nel codice 
+//  ottimizzato ci sono quattro istruzioni in meno: un risparmio di memoria del 25 %.
+//  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  04 + 2098 (load)
+//  05 + 3097 (add)
+//  06 + 2196 (store)
+//
+//  07 + 2096 (load)
+//  08 + 2198 (store)
+//  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  Figura 12.30 Codice non ottimizzato tratto dal programma in Figura 12.28
+//
+//  Modificate il compilatore in modo da offrire un'opzione di ottimizzazione del codice generato in Linguaggio Macchina Simpletron. Confrontate manualmente il codice non ottimizzato e quello ottimizzato e calcolate la percentuale
+//  di riduzione.
+//  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  Programma in semplice					Posizione e istruzione in LMS Descrizione
+//  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  5  rem aggiunge 1  a x					nessuna 	rem ignorata
+//  10 input x							00 +1099	legge x nella posizione 99
+//  15 rem verifica se y == x					nessuna		rem ignorata
+//  20 if y == x goto 60					01 + 2098	carica y (98) nell'accumulatore
+//  								02 + 3199	sottrae x (99) dall'accumulatore 
+//  								03 + 4211	se zero, salta alla posizione 11 
+//  25 rem incrementa y						nessuna		rem ignorata
+//  30 let y = y + 1						04 + 2098	carica y nell'accumulatore
+//  								05 + 3097	aggiunge 1 (97) all'accumulatore
+//  								06 + 2198	immagazzina l'accumulatore in y (98)
+//  35 rem aggiunge y al totale					nessuna		rem ignorata
+//  40 let t = t + y						07 + 2096	carica t dalla locaizone (96)
+//  								08 + 3098	aggiunge y (98) all'accumulatore 
+//  								09 + 2196 	immagazzina l'accumulatore in t (96)
+//  45 rem ciclo y						nessuna		rem ignorata
+//  50 goto 20							10 + 4001	salta alla posizione 01
+//  55 rem visualizza il risultato 				nessuna		rem ignorata
+//  60 print t							11 + 1196	visualizza t (96) sullo schermo
+//  99 end							12 + 4300	termina l'esecuzione.
+//  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  Figura 12.31 Il codice ottimizzato per il programma della Figura 12.28
+//
+//
+//  
 //
 //  (Costruite un compilatore; Prerequisiti: completate gli Esercizi 7.18, 7.19, 12.12 , 12.13 e 12.26) Ora che il linguaggio Semplice è stato presentato (Esercizio 12.26), discuteremo di come costruire il nostro compilatore di 
 //  Semplice. In primo luogo, considereremo il processo attraverso il quale un programma in linguaggio Semplice sarà convertito  in LMS ed eseguito dal simulatore Simpletron (consultate la Figura 12.27). Un file contenente un 
@@ -682,7 +728,8 @@ void printTable(tableEntry []);
 void printFlag(int []);
 void printMemory(int []);
 int search(tableEntry[], int);
-void evaluatePostfixExpression(char *expr,tableEntry T[],int *countVariable,int *countInstruction, int memory[], int returned);      //  Valuterà l'espressione in notaizone polacca inversa.
+void evaluatePostfixExpression(char *expr,tableEntry T[],int *countVariable,int *countInstruction, int memory[], int returned);      //  Valuterà l'espressione in notaizone polacca inversa
+void evaluatePostfixExpressionOptimazed(char *expr,tableEntry T[],int *countVariable, int *countInstruction, int memory[], int returned);    //  Valuterà l'espressione in notaizone polacca inversa con ottimizzazione della memoria
 
 int main(){
 
@@ -958,10 +1005,11 @@ int c;
 
 					memmove(v,v+4,strlen(v));
 					strcpy(buf,v);
+					//puts(v);
 					convertToPostfix(v,postfix);
 					//printf("\nEspressione :%s. Ora che sono inserite costanti e variabili la trasformo in notazione polacca inversa... %s\n",buf,postfix);	
 					//printf("... ora generiamo le istruzioni in semplice...\n");
-					evaluatePostfixExpression(postfix,T,&countVariable,&countInstruction,memory,returned);     //  Valuterà l'espressione in notaizone polacca inversa.
+					evaluatePostfixExpressionOptimazed(postfix,T,&countVariable,&countInstruction,memory,returned);     //  Valuterà l'espressione in notaizone polacca inversa.
 					//puts(postfix);	
 
 			}else if(strcmp(ist,"end") == 0){
@@ -1133,12 +1181,12 @@ void evaluatePostfixExpression(char *expr,tableEntry T[],int *countVariable, int
 		 
 		 memory[*countInstruction] = lms;
 		 (*countInstruction)++;
-                 /*printf("\nSposto la somma nella memoria del Simpletron %4d",*/lms = 2100 + *countVariable;
-		 memory[*countInstruction] = lms;
+                 /*printf("\nSposto la somma nella memoria del Simpletron %4d",*/lms = 2100 + *countVariable;   // Istruzione da eliminare per l'ottimizzazione del compilatore
+		 memory[*countInstruction] = lms;								// Istruzione da eliminare per l'ottimizzazione del compilatore								
 		 (*countInstruction)++;
-                 temp = *countVariable;
-                 (*countVariable)--;
-                 accumulator = 0;
+                 temp = *countVariable;		// temp archivia il valore di countVariable perchè successivamente serve sapere da quale quale posizione della memoria riprendere l'operatore
+                 (*countVariable)--;            // Decremento di countVariable per conteggio delle variabili archiviate.
+                 accumulator = 0;		// accumulator uguale a 0 perchè abbiamo spostato il valore dall'accumulatore ad una locazione di memoria
                  i++;
          }else{
                  i++;
@@ -1146,10 +1194,65 @@ void evaluatePostfixExpression(char *expr,tableEntry T[],int *countVariable, int
  	} 
  }
 
- if(temp != 0){
- 	/*printf("\nGiro terminato riporto il valore nell'accumulatore %4d",*/ memory[*countInstruction] =  2000 + temp;
- 	(*countInstruction)++; 
+ /*printf("\nGiro terminato riporto il valore nell'accumulatore %4d", memory[*countInstruction] =  2000 + temp;*/
+ /*(*countInstruction)++; */
+ /*printf(" e assegno il valore contenuto nell'accumulatore : %4d",*/ memory[*countInstruction] =  2100 + search(T,returned);
+ (*countInstruction)++;
+ //printf("\n\n ----------------- Termine valutazione espressione in notazione polacca inversa ------------------ \n\n");
+
+}
+
+
+void evaluatePostfixExpressionOptimazed(char *expr,tableEntry T[],int *countVariable, int *countInstruction, int memory[], int returned){      //  Valuterà l'espressione in notaizone polacca inversa.
+ 
+ int i = 0, op2 , temp = 0, lms, accumulator = 0;
+
+ /*printf("\n\n ----------------- Inizio valutazione espressione in notazione polacca inversa ------------------ \n\n");*/
+ 
+ while(expr[i] != '\0'){
+ 
+         if((isdigit(expr[i]) || isalpha(expr[i])) && accumulator == 0 && temp == 0){
+                 /*printf("Inserisco il valore nell'accumulatore: %4d ",*/lms = 2000 + search(T,expr[i]);
+		 memory[*countInstruction] = lms;
+		 (*countInstruction)++;
+                 accumulator = 1;
+                 i++;
+	}/*else if(temp != 0 && (isdigit(expr[i]) || isalpha(expr[i])) && accumulator == 0){
+                 printf("\nRiporto nell'accumulatore il valore precendentemente archiviato %4d ",lms = 2000 + temp;
+		 memory[*countInstruction] = lms;
+		 (*countInstruction)++;
+                 temp = 0;
+                 accumulator = 1;
+                 i++;
+         }*/else if((isdigit(expr[i]) || isalpha(expr[i])) && accumulator != 0){
+                 op2 = search(T,expr[i]);
+                 //printf("\nIndividuo un altro operando: %2d",op2);
+		 i++;
+         }else if(expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/'){ 		// operazione
+                 //printf("\nOperatore : %c",expr[i]);
+                
+		 if(expr[i] == '+') 		 /*printf("\nIstruzioni per la somma %4d",*/lms = 3000 + op2;
+		 else if(expr[i] == '-')	 /*printf("\nIstruzioni per la sottrazione %4d",*/lms = 3100 + op2;
+		 else if(expr[i] == '*')	 /*printf("\nIstruzioni per la moltiplicazione %4d",*/lms = 3300 + op2;
+		 else if(expr[i] == '/')	 /*printf("\nIstruzioni per la divisione %4d",*/lms = 3200 + op2;
+		 
+		 memory[*countInstruction] = lms;
+		 (*countInstruction)++;
+                 /*printf("\nSposto la somma nella memoria del Simpletron %4d",lms = 2100 + *countVariable; */  // Istruzione da eliminare per l'ottimizzazione del compilatore
+		 //memory[*countInstruction] = lms;								// Istruzione da eliminare per l'ottimizzazione del compilatore								
+		 //(*countInstruction)++;
+                 //temp = *countVariable;		// temp archivia il valore di countVariable perchè successivamente serve sapere da quale quale posizione della memoria riprendere l'operatore
+                 //(*countVariable)--;            // Decremento di countVariable per conteggio delle variabili archiviate.
+                 //accumulator = 0;		// accumulator uguale a 0 perchè abbiamo spostato il valore dall'accumulatore ad una locazione di memoria
+                 i++;
+         }else{
+                 i++;
+ 
+ 	} 
  }
+
+ /*printf("\nGiro terminato riporto il valore nell'accumulatore %4d",*/ //memory[*countInstruction] =  2000 + temp;
+ //(*countInstruction)++; 
  /*printf(" e assegno il valore contenuto nell'accumulatore : %4d",*/ memory[*countInstruction] =  2100 + search(T,returned);
  (*countInstruction)++;
  //printf("\n\n ----------------- Termine valutazione espressione in notazione polacca inversa ------------------ \n\n");

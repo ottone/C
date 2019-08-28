@@ -166,7 +166,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-//#include <math.h>
+#include <math.h>
 
 struct stackNode {
 	char data;
@@ -400,10 +400,10 @@ int calculate(int op1, int op2, char operator){ //  Calcolerà il valore dell'es
 		value = op1 / op2;
 		break;
 
-		//case '^':
-		//value = 1;
-		//while(op1-- > 0) value *= op2;
-		//value = pow(op1,op2);
+		case '^':
+		value = 1;
+		while(op1-- > 0) value *= op2;
+		value = pow(op1,op2);
 		default :
 		break;
 	}
