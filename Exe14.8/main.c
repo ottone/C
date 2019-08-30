@@ -16,48 +16,45 @@
 
 int main(int argc, char *argv[])
 {
-   int i, x ;
-   char c ,a ;
+   int i = 1;
+   char *c ,a ;
    FILE *file1, *file2; 
    
-  /* 
+  
 
    if(argc != 3){
-	   printf("\ncopyReverse file1 file2\n");
+	   printf("\n14.8 file1 file2\n");
    }else{
-*/	   
-	   if(((file1 = fopen(argv[1],"r")) == NULL))// && ((file2 = fopen(argv[1],"w")) == NULL))
+	   
+	   if ((file1 = fopen(argv[1],"r")) == NULL)  
 		   printf("\nImpossibile aprire i files...\n");
 	   else{
-		   i = 1;
-		   //c = calloc(i,sizeof(char));
-		   fread(&a,sizeof(char),1,file1);
-		   putchar(a);
-		   while(!feof(file1)){
-			   fread(&a,sizeof(char),1,file1);
-				putchar(a);
-			}   //i = i + sizeof(char);
-			   //c = realloc(c,i);
-		   //}
-
-		   //for(;i > 0; i--)
-		//	   putchar(c[i]);
+		   if((file2 = fopen(argv[2],"w")) == NULL)
+			   printf("\nImpossibile aprire %s\n",argv[2]);
+		   else{
+		  	 while((a = getc(file1)) != EOF)  i++;
 		   
-		   fclose(file1);
-/*
-		   for(; i > 0; i--) putc(c[i],file2);
+		  	 rewind(file1);
 
-		   free(c);
-
-		   rewind(file2);
-
-		   while(a = getc(file2) != EOF) putchar(a);
-
-		   fclose(file2);
-*/		   
-	   }
-
+		 	  c = calloc(i,sizeof(char));
+		
+		 	  i = 0;
+		 	  while((a = getc(file1)) != EOF) c[i++] = a;
+		   
+		 	  fclose(file1);
+		   
+		 	  for(; i >= 0; i--){ 
+				   putchar(c[i]);
+				   putc(c[i],file2);
+		   		}
+			
+		   	//free(c);
+		   	fclose(file2);
+		
+		   }
+	
 
    }
-
+}
+}
 
